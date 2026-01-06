@@ -9,12 +9,16 @@
         "php": ">=8.4.16",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "symfony/asset": "7.4.*",
         "symfony/console": "7.4.*",
         "symfony/dotenv": "7.4.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.4.*",
         "symfony/runtime": "7.4.*",
-        "symfony/yaml": "7.4.*"
+        "symfony/twig-bundle": "7.4.*",
+        "symfony/yaml": "7.4.*",
+        "twig/extra-bundle": "^3.22",
+        "twig/string-extra": "^3.22"
     },
     "config": {
         "allow-plugins": {
@@ -66,5 +70,10 @@
             "require": "7.4.*",
             "docker": true
         }
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.65",
+        "symfony/stopwatch": "7.4.*",
+        "symfony/web-profiler-bundle": "7.4.*"
     }
 }

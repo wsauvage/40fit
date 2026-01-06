@@ -1,10 +1,8 @@
-{% extends 'base.html.twig' %}
-
-
-
-
-{% block body %}
-
-    {% include '' %}
-
-{% endblock %}
+<nav style="border: 1px solid black">
+    {% block logo %}
+        <img src="https://git-scm.com/images/logo@2x.png"/>
+    {% endblock %}
+    {% block title %}
+        Mon application
+    {% endblock %}
+</nav>
