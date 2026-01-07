@@ -2,11 +2,15 @@
 
 namespace App\Service;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ChallengeHandler
 {
-    public function __construct(private readonly ParameterBagInterface $params,)
+    public function __construct(
+        private readonly ParameterBagInterface $params,
+        private readonly LoggerInterface $logger
+    )
     {
     }
 
@@ -26,6 +30,9 @@ class ChallengeHandler
                 return $challenge;
             }
         }
+
+        $this->logger->warning("Challenge #{$id} introuvable dans le fichier JSON.");
+
         return null;
     }
 

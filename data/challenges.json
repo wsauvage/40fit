@@ -88,35 +88,5 @@
         "categoryName": "MSEC",
         "title": "Fente profonde",
         "description": "Réussir une fente profonde avec le genou arrière au sol et étirement du psoas, maintien 30 secondes de chaque côté."
-    },
-    {
-        "id": 16,
-        "categoryName": "Santé & Mesures Clés",
-        "title": "IMC",
-        "description": "Maintenir un Indice de Masse Corporelle (IMC) entre 18.5 et 24.9."
-    },
-    {
-        "id": 17,
-        "categoryName": "Santé & Mesures Clés",
-        "title": "Fréquence cardiaque au repos",
-        "description": "Atteindre une fréquence cardiaque au repos inférieure à 65 battements par minute."
-    },
-    {
-        "id": 18,
-        "categoryName": "Santé & Mesures Clés",
-        "title": "Tension artérielle",
-        "description": "Maintenir une tension artérielle optimale (inférieure à 120/80 mmHg)."
-    },
-    {
-        "id": 19,
-        "categoryName": "Santé & Mesures Clés",
-        "title": "Tour de taille",
-        "description": "Maintenir un tour de taille sain (inférieur à 94 cm)."
-    },
-    {
-        "id": 20,
-        "categoryName": "Santé & Mesures Clés",
-        "title": "Masse grasse",
-        "description": "Atteindre un pourcentage de masse grasse sain (inférieur à 20%)."
     }
 ]
