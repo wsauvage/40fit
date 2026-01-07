@@ -16,6 +16,23 @@ class ChallengeRepository extends ServiceEntityRepository
         parent::__construct($registry, Challenge::class);
     }
 
+
+    public function searchChallengeByTitle(string $query) : array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->select('c.title, cat.title AS categoryTitle')
+            ->leftJoin('c.category', 'cat')
+            ->where('c.title LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->setMaxResults(1)
+            ->orderBy('c.title', 'DESC');
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+
+
     //    /**
     //     * @return Challenge[] Returns an array of Challenge objects
     //     */

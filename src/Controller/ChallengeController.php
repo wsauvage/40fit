@@ -13,18 +13,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ChallengeController extends AbstractController
 {
     #[Route('/{id}', name: 'show')]
-    public function show(ChallengeHandler $challengeHandler, int $id, EntityManagerInterface $manager): Response
+    public function show(int $id, EntityManagerInterface $entityManager): Response
     {
 
-        $challenge = $challengeHandler->getChallengeById($id);
+        $challenge = $entityManager->getRepository(Challenge::class)->find($id);
 
         if (!$challenge) {
             throw $this->createNotFoundException("Challenge #{$id} introuvable");
         }
-
-        $challenge = new Challenge();
-        $tile = $challenge->getTitle();
-
 
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
