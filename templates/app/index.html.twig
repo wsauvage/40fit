@@ -1,12 +1,450 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="grid grid-cols-2 gap-3 mx-auto">
-        {% for challenge in challenges %}
-            <a href="{{ path('challenge_show', { id : challenge.id }) }}" class="bg-white block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-gray-100 rounded-lg">
-                <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">{{ challenge.title }}</h5>
-                <p class="text-body">{{ challenge.description }}</p>
-            </a>
-        {% endfor %}
-    </div>
+        <div class="w-full ">
+            <!-- Top bar -->
+            <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur">
+                <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center gap-3">
+                        <div class="h-9 w-9 rounded-xl bg-white/10 ring-1 ring-white/15 grid place-items-center">
+                            <span class="text-sm font-black tracking-tight">40</span>
+                        </div>
+                        <span class="text-lg font-semibold tracking-tight">FortyFit</span>
+                    </div>
+
+                    <nav class="hidden md:flex items-center gap-6 text-sm text-slate-200">
+                        <a href="#features" class="hover:text-white">Fonctionnalités</a>
+                        <a href="#how" class="hover:text-white">Comment ça marche</a>
+                        <a href="#progress" class="hover:text-white">Suivi</a>
+                        <a href="#faq" class="hover:text-white">FAQ</a>
+                    </nav>
+
+                    {% if app.user is not null %}
+                        <div class="flex items-center gap-3">
+                            <a href="{{ path('challenge_index') }}" class="inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-100">
+                                Dashboard
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="flex items-center gap-3">
+                            <a href="{{ path('app_login') }}" class="inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-100">
+                                Connexion
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="flex items-center gap-3">
+                            <a href="#" class="inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-100">
+                                Administration
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </header>
+
+            <!-- Hero -->
+            <section class="relative overflow-hidden">
+                <div class="absolute inset-0 -z-10">
+                    <div class="absolute -top-32 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-indigo-500/20 blur-3xl"></div>
+                    <div class="absolute -bottom-40 right-0 h-[520px] w-[520px] rounded-full bg-emerald-400/10 blur-3xl"></div>
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_55%)]"></div>
+                </div>
+
+                <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+                    <div class="grid items-center gap-10 lg:grid-cols-2">
+                        <div>
+                            <div class="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-xs font-semibold text-slate-200 ring-1 ring-white/10">
+                                <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                                Objectifs simples • Suivi clair • Progression motivante
+                            </div>
+
+                            <h1 class="mt-6 text-4xl font-black tracking-tight sm:text-5xl">
+                                Avant que monter les escaliers devienne un sport.
+                            </h1>
+                            <p class="mt-5 text-base leading-relaxed text-slate-200 sm:text-lg">
+                                FortyFit vous aide à reprendre la forme <span class="font-semibold text-white">sans vous prendre la tête</span> :
+                                des objectifs concrets, un suivi de progression visuel, et une routine adaptée à votre rythme.
+                            </p>
+
+                            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                                <a href="#cta" class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100">
+                                    Créer mon premier objectif
+                                </a>
+                                <a href="#features" class="inline-flex items-center justify-center rounded-2xl bg-white/10 px-6 py-3 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15">
+                                    Découvrir les fonctionnalités
+                                </a>
+                            </div>
+
+                            <div class="mt-8 grid grid-cols-3 gap-4 text-sm">
+                                <div class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
+                                    <div class="text-2xl font-black">3 min</div>
+                                    <div class="mt-1 text-slate-200">pour démarrer</div>
+                                </div>
+                                <div class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
+                                    <div class="text-2xl font-black">0</div>
+                                    <div class="mt-1 text-slate-200">culpabilité</div>
+                                </div>
+                                <div class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
+                                    <div class="text-2xl font-black">100%</div>
+                                    <div class="mt-1 text-slate-200">progressif</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mock preview -->
+                        <div class="relative">
+                            <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                                <div class="flex items-center justify-between">
+                                    <div class="text-sm font-semibold text-slate-100">Mon tableau de bord</div>
+                                    <div class="rounded-xl bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/10">Semaine 2</div>
+                                </div>
+
+                                <div class="mt-6 space-y-4">
+                                    <div class="rounded-2xl bg-slate-900/70 p-4 ring-1 ring-white/10">
+                                        <div class="flex items-start justify-between gap-4">
+                                            <div>
+                                                <div class="text-sm font-bold">Objectif</div>
+                                                <div class="mt-1 text-slate-200">Réussir 30 pompes d’affilée</div>
+                                            </div>
+                                            <span class="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-semibold text-emerald-200 ring-1 ring-emerald-400/20">
+                        En cours
+                      </span>
+                                        </div>
+                                        <div class="mt-4">
+                                            <div class="flex items-center justify-between text-xs text-slate-200">
+                                                <span>Progression</span>
+                                                <span class="font-semibold text-white">18 / 30</span>
+                                            </div>
+                                            <div class="mt-2 h-2 w-full rounded-full bg-white/10">
+                                                <div class="h-2 w-[60%] rounded-full bg-emerald-400"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rounded-2xl bg-slate-900/70 p-4 ring-1 ring-white/10">
+                                        <div class="flex items-start justify-between gap-4">
+                                            <div>
+                                                <div class="text-sm font-bold">Objectif</div>
+                                                <div class="mt-1 text-slate-200">Marcher 8 000 pas / jour</div>
+                                            </div>
+                                            <span class="rounded-full bg-indigo-400/15 px-3 py-1 text-xs font-semibold text-indigo-200 ring-1 ring-indigo-400/20">
+                        Régularité
+                      </span>
+                                        </div>
+                                        <div class="mt-4">
+                                            <div class="flex items-center justify-between text-xs text-slate-200">
+                                                <span>Cette semaine</span>
+                                                <span class="font-semibold text-white">5 / 7 jours</span>
+                                            </div>
+                                            <div class="mt-2 grid grid-cols-7 gap-2">
+                                                <div class="h-2 rounded-full bg-indigo-400"></div>
+                                                <div class="h-2 rounded-full bg-indigo-400"></div>
+                                                <div class="h-2 rounded-full bg-indigo-400"></div>
+                                                <div class="h-2 rounded-full bg-indigo-400"></div>
+                                                <div class="h-2 rounded-full bg-indigo-400"></div>
+                                                <div class="h-2 rounded-full bg-white/10"></div>
+                                                <div class="h-2 rounded-full bg-white/10"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
+                                        <div class="text-xs font-semibold text-slate-200">Conseil du jour</div>
+                                        <div class="mt-2 text-sm text-slate-100">
+                                            Une progression stable vaut mieux qu’un “grand élan” suivi d’un arrêt. Visez le minimum viable, puis augmentez.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-white/5 blur-2xl"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section id="features" class="border-t border-white/10">
+                <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                    <div class="max-w-2xl">
+                        <h2 class="text-3xl font-black tracking-tight">Un système pensé pour progresser.</h2>
+                        <p class="mt-4 text-slate-200">
+                            L’app est centrée sur le cœur du cahier des charges : <span class="font-semibold text-white">le suivi de progression</span>
+                            et l’atteinte d’objectifs clairs.
+                        </p>
+                    </div>
+
+                    <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Objectifs structurés</div>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-200">
+                                Chaque objectif contient un <span class="text-white font-semibold">titre</span> (ex : “30 pompes d’affilée”)
+                                et une <span class="text-white font-semibold">description</span> (instructions, conseils, contexte).
+                            </p>
+                        </div>
+
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Suivi visuel & motivant</div>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-200">
+                                Barres de progression, jalons, et historique : vous voyez ce qui avance, même quand c’est lent.
+                            </p>
+                        </div>
+
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Progression réaliste</div>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-200">
+                                Un rythme soutenable vaut mieux qu’un plan parfait. FortyFit favorise la constance.
+                            </p>
+                        </div>
+
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Simplicité d’usage</div>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-200">
+                                Créez un objectif, loggez une perf, et laissez le tableau de bord faire le reste.
+                            </p>
+                        </div>
+
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Micro-actions</div>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-200">
+                                Des petites actions quotidiennes qui composent un vrai changement sur 4 à 8 semaines.
+                            </p>
+                        </div>
+
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Sans culpabilisation</div>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-200">
+                                Pas de “tout ou rien”. Une journée ratée n’annule pas les autres.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How it works -->
+            <section id="how" class="border-t border-white/10">
+                <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                    <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+                        <div>
+                            <h2 class="text-3xl font-black tracking-tight">Comment ça marche</h2>
+                            <p class="mt-4 text-slate-200">
+                                Un parcours simple, en 3 étapes. Pas besoin d’être sportif : on part de votre réalité.
+                            </p>
+
+                            <ol class="mt-8 space-y-4">
+                                <li class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                                    <div class="flex items-start gap-4">
+                                        <div class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/10">
+                                            <span class="text-sm font-black">1</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-semibold text-white">Définissez un objectif</div>
+                                            <p class="mt-1 text-sm text-slate-200">
+                                                Ex : “30 pompes”, “marcher 8 000 pas”, “tenir 2 min de gainage”.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                                    <div class="flex items-start gap-4">
+                                        <div class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/10">
+                                            <span class="text-sm font-black">2</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-semibold text-white">Suivez votre progression</div>
+                                            <p class="mt-1 text-sm text-slate-200">
+                                                Vous notez vos performances. Le tableau de bord vous montre l’évolution.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                                    <div class="flex items-start gap-4">
+                                        <div class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/10">
+                                            <span class="text-sm font-black">3</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-semibold text-white">Atteignez votre cible</div>
+                                            <p class="mt-1 text-sm text-slate-200">
+                                                Quand c’est acquis, vous créez un nouveau palier. Toujours progressif.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div id="progress" class="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10">
+                            <h3 class="text-xl font-black tracking-tight">Suivi de progression (cœur de l’app)</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-200">
+                                Le module permet de visualiser l’évolution des performances et l’atteinte d’objectifs.
+                                Chaque objectif est modélisé de manière structurée :
+                            </p>
+
+                            <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+                                <div class="rounded-2xl bg-slate-900/60 p-4 ring-1 ring-white/10">
+                                    <dt class="text-xs font-semibold text-slate-200">Titre (texte court)</dt>
+                                    <dd class="mt-1 text-sm text-white">Nom de l’objectif</dd>
+                                    <dd class="mt-1 text-sm text-slate-200">Ex : “Réussir 30 pompes d’affilée”</dd>
+                                </div>
+                                <div class="rounded-2xl bg-slate-900/60 p-4 ring-1 ring-white/10">
+                                    <dt class="text-xs font-semibold text-slate-200">Description (texte long)</dt>
+                                    <dd class="mt-1 text-sm text-white">Détails et instructions</dd>
+                                    <dd class="mt-1 text-sm text-slate-200">Conseils, contexte, mode de validation…</dd>
+                                </div>
+                            </dl>
+
+                            <div class="mt-6 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
+                                <div class="text-xs font-semibold text-slate-200">Exemple</div>
+                                <div class="mt-2 text-sm text-slate-100">
+                                    Objectif “30 pompes” → progression enregistrée chaque semaine → visualisation claire des paliers.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials / social proof (placeholder) -->
+            <section class="border-t border-white/10">
+                <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                    <div class="grid gap-6 lg:grid-cols-3">
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <p class="text-sm text-slate-200">
+                                “Enfin une app qui ne me vend pas une transformation magique. Je vois juste mes progrès.”
+                            </p>
+                            <div class="mt-4 text-sm font-semibold">— Karim, 44 ans</div>
+                        </div>
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <p class="text-sm text-slate-200">
+                                “Le suivi m’a motivée. Même quand je fais peu, je vois que je continue.”
+                            </p>
+                            <div class="mt-4 text-sm font-semibold">— Sophie, 41 ans</div>
+                        </div>
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <p class="text-sm text-slate-200">
+                                “Simple. Pas d’usine à gaz. Un objectif, un suivi, et ça avance.”
+                            </p>
+                            <div class="mt-4 text-sm font-semibold">— Julien, 47 ans</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section id="cta" class="border-t border-white/10">
+                <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                    <div class="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 lg:p-12">
+                        <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+                            <div>
+                                <h2 class="text-3xl font-black tracking-tight">Commence aujourd’hui, sans pression.</h2>
+                                <p class="mt-4 text-slate-200">
+                                    Crée ton premier objectif en 3 minutes, et commence à suivre tes progrès dès cette semaine.
+                                </p>
+                                <ul class="mt-6 space-y-2 text-sm text-slate-200">
+                                    <li class="flex items-center gap-2">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                                        Objectifs concrets (titre + description)
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                                        Suivi de progression clair
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                                        Approche progressive et durable
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <form class="rounded-3xl bg-slate-900/60 p-6 ring-1 ring-white/10">
+                                <div class="text-sm font-semibold text-white">Recevoir l’accès (liste d’attente)</div>
+                                <p class="mt-2 text-sm text-slate-200">Laisse ton email, on te prévient dès que c’est ouvert.</p>
+
+                                <div class="mt-5 space-y-3">
+                                    <label class="block">
+                                        <span class="text-xs font-semibold text-slate-200">Email</span>
+                                        <input
+                                            type="email"
+                                            placeholder="toi@exemple.com"
+                                            class="mt-2 w-full rounded-2xl bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-400 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                        />
+                                    </label>
+
+                                    <label class="block">
+                                        <span class="text-xs font-semibold text-slate-200">Ton 1er objectif (optionnel)</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Ex : 30 pompes / 8000 pas / 2 min de gainage"
+                                            class="mt-2 w-full rounded-2xl bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-400 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                        />
+                                    </label>
+
+                                    <button type="button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100">
+                                        Rejoindre la liste
+                                    </button>
+
+                                    <p class="text-xs text-white">
+                                        Pas de spam. Désinscription en 1 clic.
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section id="faq" class="border-t border-white/10">
+                <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-black tracking-tight">FAQ</h2>
+                    <div class="mt-8 grid gap-6 lg:grid-cols-3">
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">C’est pour qui ?</div>
+                            <p class="mt-2 text-sm text-slate-200">
+                                Pour les personnes qui veulent reprendre une routine simple et mesurable, sans programme extrême.
+                            </p>
+                        </div>
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Je débute total…</div>
+                            <p class="mt-2 text-sm text-slate-200">
+                                C’est justement l’idée : partir de ton niveau et construire des paliers atteignables.
+                            </p>
+                        </div>
+                        <div class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+                            <div class="text-sm font-semibold text-white">Je fais une pause, je perds tout ?</div>
+                            <p class="mt-2 text-sm text-slate-200">
+                                Non. Le suivi est là pour reprendre sans culpabiliser et repartir sur un minimum viable.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="border-t border-white/10">
+                <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+                    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="h-9 w-9 rounded-xl bg-white/10 ring-1 ring-white/15 grid place-items-center">
+                                <span class="text-sm font-black tracking-tight">40</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold">FortyFit</div>
+                                <div class="text-xs text-white">Avant que monter les escaliers devienne un sport</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-slate-400">
+                            © <span id="y"></span> FortyFit — Tous droits réservés.
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    document.getElementById("y").textContent = new Date().getFullYear();
+                </script>
+            </footer>
+
+        </div>
 {% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="grid grid-cols-2 gap-3 mx-auto">
+        {% for challenge in challenges %}
+            <a href="{{ path('challenge_show', { id : challenge.id }) }}" class="bg-white block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-gray-100 rounded-lg">
+                <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">{{ challenge.title }}</h5>
+                <p class="text-body">{{ challenge.description }}</p>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
