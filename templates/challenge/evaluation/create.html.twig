@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+    {{ form_start(evaluationForm) }}
+    {{ form_row(evaluationForm.value, {
+        attr: {
+            class: 'bg-blue-300'
+        }}) }}
+    {{ form_end(evaluationForm) }}
+    </div>
+{% endblock %}

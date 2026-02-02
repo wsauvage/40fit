@@ -3,12 +3,23 @@
 {% block title %}Défi : {{ challenge.title }}{% endblock %}
 
 {% block body %}
-    <div class="max-w-4xl mx-auto px-4">
-        <article class="bg-white p-6 rounded-lg shadow-md">
-            <header class="mb-6">
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ challenge.title }}</h1>
-                <p class="text-gray-600">{{ challenge.description }}</p>
-            </header>
-        </article>
+    <div class="flex flex-col mx-auto gap-5">
+        <div class="max-w-4xl mx-auto">
+            <article class="bg-white p-6 rounded-lg shadow-md">
+                <header class="mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ challenge.title }}</h1>
+                    <p class="text-gray-600">{{ challenge.description }}</p>
+                </header>
+            </article>
+        </div>
+        <div>
+            <a class="px-3 py-2 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
+               href="{{ path('challenge_evaluations_create', {'id': challenge.id}) }}">Ajouter une evaluation</a>
+        </div>
+        <ul class="flex flex-col gap-2">
+            {% for eval in challenge.evaluations %}
+                <li class="p-3 border rounded-lg">{{ eval.value }}</li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}
