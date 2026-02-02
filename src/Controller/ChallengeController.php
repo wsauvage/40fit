@@ -38,4 +38,5 @@ final class ChallengeController extends AbstractController
             'challenge' => $challenge,
         ]);
     }
+
 }
