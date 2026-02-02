@@ -18,7 +18,9 @@
         </div>
         <ul class="flex flex-col gap-2">
             {% for eval in challenge.evaluations %}
-                <li class="p-3 border rounded-lg">{{ eval.value }}</li>
+                <a href="{{ path('challenge_evaluations_update', {'id': challenge.id, 'evaluationId': eval.id }) }}">
+                    <div class="p-3 border rounded-lg">{{ eval.value }}</div>
+                </a>
             {% endfor %}
         </ul>
     </div>

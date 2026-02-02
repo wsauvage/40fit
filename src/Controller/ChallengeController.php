@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Challenge;
 use App\Entity\Evaluation;
+use App\Form\EvaluationType;
 use App\Repository\ChallengeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -48,10 +49,7 @@ final class ChallengeController extends AbstractController
             ->setAssociatedUser($this->getUser())
             ->setChallenge($challenge);
 
-        $evaluationForm = $this->createFormBuilder($evaluation)
-            ->add('value', NumberType::class)
-            ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
-            ->getForm();
+        $evaluationForm = $this->createForm(EvaluationType::class, $evaluation);
 
         $evaluationForm->handleRequest($request);
         if ($evaluationForm->isSubmitted() && $evaluationForm->isValid()) {
@@ -62,6 +60,23 @@ final class ChallengeController extends AbstractController
         }
 
         return $this->render('challenge/evaluation/create.html.twig', [
+            'evaluationForm' => $evaluationForm,
+        ]);
+    }
+
+    #[Route('/{id}/evaluations/{evaluationId}/update', name: 'evaluations_update')]
+    public function evaluationUpdate(Challenge $challenge, #[MapEntity(id: 'evaluationId')] Evaluation $evaluation, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $evaluationForm = $this->createForm(EvaluationType::class, $evaluation);
+
+        $evaluationForm->handleRequest($request);
+        if ($evaluationForm->isSubmitted() && $evaluationForm->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('challenge_show', ['id' => $challenge->getId()]);
+        }
+
+        return $this->render('challenge/evaluation/update.html.twig', [
             'evaluationForm' => $evaluationForm,
         ]);
     }
