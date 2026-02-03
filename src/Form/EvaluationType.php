@@ -14,7 +14,12 @@ class EvaluationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('value', NumberType::class)
+            ->add('value', NumberType::class, [
+                'attr' => [
+                    'min' => 0,
+                ],
+                'required' => true,
+            ])
             ->add('save', SubmitType::class, ['label' => 'Enregistrer']);
     }
 

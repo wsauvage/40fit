@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EvaluationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EvaluationRepository::class)]
 class Evaluation
@@ -21,6 +22,9 @@ class Evaluation
     private ?User $associatedUser = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
+    #[Assert\PositiveOrZero]
     private ?float $value = null;
 
     public function getId(): ?int
