@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Faker;
 
 class UserFixtures extends Fixture
 {
@@ -16,37 +17,21 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $users = [
-            [
-                'email' => 'william@ri7.fr',
-//                'firstname' => 'William',
-//                'lastname' => 'Sauvage',
-            ],
-            [
-                'email' => 'admin@ri7.fr',
-//                'firstname' => 'William',
-//                'lastname' => 'Sauvage',
-            ],
-        ];
-        foreach ($users as $i => $userData) {
-            $user = new User();
-            $user->setEmail($userData['email']);
+        $faker = Faker\Factory::create('fr_FR');
 
-            $hashedPassword = $this->passwordHasher->hashPassword(
-                $user,
-                $userData['email']
-            );
+        $admin = new User()
+            ->setRoles(['ROLE_ADMIN'])
+            ->setEmail('admin@admin.fr');
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin@admin.fr'));
+        $manager->persist($admin);
 
-            $user->setPassword($hashedPassword);
-
-            if ($i === 1) {
-                $user->setRoles(['ROLE_ADMIN']);
-            }
-
+        for ($i = 0; $i < 4; $i++) {
+            $email = $faker->email();
+            $user = new User()->setEmail($email);
+            $user->setPassword($this->passwordHasher->hashPassword($user, $email));
             $manager->persist($user);
         }
 
         $manager->flush();
     }
-
 }

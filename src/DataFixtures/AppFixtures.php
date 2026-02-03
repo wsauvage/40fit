@@ -6,6 +6,8 @@ use App\Entity\Challenge;
 use App\Entity\ChallengeCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class AppFixtures extends Fixture
@@ -19,15 +21,12 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-
         $projectDir = $this->params->get('kernel.project_dir');
         $jsonFilePath = $projectDir . '/data/challenges.json';
         $challenges = json_decode(file_get_contents($jsonFilePath), true);
 
         foreach ($challenges as $challengeData) {
-
             $categoryName = $challengeData['categoryName'];
-
            $category =  $manager->getRepository(ChallengeCategory::class)->findOneBy([
                'title' => $categoryName
            ]);
@@ -45,7 +44,7 @@ class AppFixtures extends Fixture
            $challenge->setSlug($slug);
            $challenge->setDescription($challengeData['description']);
            $challenge->setCategory($category);
-           $challenge->setTargetValue(1);
+           $challenge->setTargetValue($challengeData['targetValue']);
 
            $manager->persist($challenge);
         }
