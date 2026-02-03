@@ -45,6 +45,8 @@ class AppFixtures extends Fixture
            $challenge->setSlug($slug);
            $challenge->setDescription($challengeData['description']);
            $challenge->setCategory($category);
+           $challenge->setTargetValue(1);
+
            $manager->persist($challenge);
         }
 

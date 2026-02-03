@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChallengeRepository::class)]
 class Challenge
@@ -17,9 +18,13 @@ class Challenge
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 3, max: 100)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10)]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'challenges')]
@@ -37,6 +42,11 @@ class Challenge
      */
     #[ORM\OneToMany(targetEntity: Evaluation::class, mappedBy: 'challenge')]
     private Collection $evaluations;
+
+    #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    private ?int $targetValue = null;
 
     public function __construct()
     {
@@ -134,6 +144,18 @@ class Challenge
                 $evaluation->setChallenge(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTargetValue(): ?int
+    {
+        return $this->targetValue;
+    }
+
+    public function setTargetValue(int $targetValue): static
+    {
+        $this->targetValue = $targetValue;
 
         return $this;
     }
