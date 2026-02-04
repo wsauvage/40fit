@@ -31,4 +31,5 @@ class ProgressEvaluationCalculatorTest extends TestCase
         $evaluationCalculator = new ProgressEvaluationCalculator();
         $evaluationCalculator->calculate($evaluation);
     }
+    // oui
 }
