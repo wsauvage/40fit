@@ -19,8 +19,7 @@ class EvaluationType extends AbstractType
                     'min' => 0,
                 ],
                 'required' => true,
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Enregistrer']);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

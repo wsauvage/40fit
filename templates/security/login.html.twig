@@ -1,35 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion — FortyFit{% endblock %}
 
 {% block body %}
-    <div class="bg-white max-w-2xl mx-auto p-3">
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-
-        <div class="checkbox mb-3">
-            <input type="checkbox" name="_remember_me" id="_remember_me">
-            <label for="_remember_me">Remember me</label>
+    <div class="mx-auto max-w-md">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold tracking-tight">Connexion</h1>
+            <p class="mt-2 text-sm text-slate-400">Accédez à votre espace FortyFit</p>
         </div>
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
+        <div class="rounded-2xl bg-white/5 p-8 ring-1 ring-white/10">
+            {% if error %}
+                <div class="mb-6 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-300 ring-1 ring-red-500/20">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-6 rounded-xl bg-primary-500/10 px-4 py-3 text-sm text-primary-300 ring-1 ring-primary-500/20">
+                    Connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>
+                    <a href="{{ logout_path() }}" class="ml-2 underline hover:no-underline">Se déconnecter</a>
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-5">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                    <input
+                        type="email"
+                        name="_username"
+                        id="username"
+                        value="{{ last_username }}"
+                        autocomplete="email"
+                        required
+                        autofocus
+                        class="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-shadow"
+                        placeholder="vous@exemple.com"
+                    >
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-300 mb-2">Mot de passe</label>
+                    <input
+                        type="password"
+                        name="_password"
+                        id="password"
+                        autocomplete="current-password"
+                        required
+                        class="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-shadow"
+                        placeholder="••••••••"
+                    >
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        name="_remember_me"
+                        id="_remember_me"
+                        class="h-4 w-4 rounded bg-white/5 border-white/20 text-primary-500 focus:ring-primary-500/50"
+                    >
+                    <label for="_remember_me" class="text-sm text-slate-400">Se souvenir de moi</label>
+                </div>
+
+                <button type="submit" class="w-full rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100 transition-colors">
+                    Se connecter
+                </button>
+            </form>
+
+            <p class="mt-6 text-center text-sm text-slate-400">
+                Pas encore de compte ?
+                <a href="{{ path('app_register') }}" class="text-white hover:underline">S'inscrire</a>
+            </p>
+        </div>
     </div>
 {% endblock %}

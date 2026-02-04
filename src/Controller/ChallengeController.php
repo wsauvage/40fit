@@ -68,6 +68,7 @@ final class ChallengeController extends AbstractController
 
         return $this->render('challenge/evaluation/create.html.twig', [
             'evaluationForm' => $evaluationForm,
+            'challenge' => $evaluation->getChallenge()
         ]);
     }
 
@@ -85,6 +86,7 @@ final class ChallengeController extends AbstractController
 
         return $this->render('challenge/evaluation/update.html.twig', [
             'evaluationForm' => $evaluationForm,
+            'challenge' => $evaluation->getChallenge()
         ]);
     }
 }

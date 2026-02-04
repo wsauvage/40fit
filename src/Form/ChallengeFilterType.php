@@ -18,8 +18,7 @@ class ChallengeFilterType extends AbstractType
                 'class' => ChallengeCategory::class,
                 'required' => false,
                 'expanded' => true,
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Enregistrer']);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

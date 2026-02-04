@@ -1,27 +1,85 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Défi : {{ challenge.title }}{% endblock %}
+{% block title %}{{ challenge.title }} — FortyFit{% endblock %}
 
 {% block body %}
-    <div class="flex flex-col mx-auto gap-5">
-        <div class="max-w-4xl mx-auto">
-            <article class="bg-white p-6 rounded-lg shadow-md">
-                <header class="mb-6">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ challenge.title }}</h1>
-                    <p class="text-gray-600">{{ challenge.description }}</p>
-                </header>
-            </article>
-        </div>
-        <div>
-            <a class="px-3 py-2 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
-               href="{{ path('challenge_evaluations_create', {'id': challenge.id}) }}">Ajouter une evaluation</a>
-        </div>
-        <ul class="flex flex-col gap-2">
-            {% for eval in challenge.evaluations %}
-                <a href="{{ path('challenge_evaluations_update', {'id': challenge.id, 'evaluationId': eval.id }) }}">
-                    <div class="p-3 border rounded-lg">{{ eval.value }}</div>
+    <div class="space-y-8">
+        {# Breadcrumb #}
+        <nav class="flex items-center gap-2 text-sm text-slate-400">
+            <a href="{{ path('challenge_index') }}" class="hover:text-white transition-colors">Mes objectifs</a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            <span class="text-white truncate">{{ challenge.title }}</span>
+        </nav>
+
+        {# Header #}
+        <div class="rounded-2xl bg-white/5 p-8 ring-1 ring-white/10">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <div class="flex-1">
+                    <h1 class="text-2xl font-bold tracking-tight">{{ challenge.title }}</h1>
+                    {% if challenge.category %}
+                        <span class="inline-block mt-3 rounded-full bg-primary-500/15 px-3 py-1 text-xs font-medium text-primary-300 ring-1 ring-primary-500/20">
+                            {{ challenge.category.title }}
+                        </span>
+                    {% endif %}
+                </div>
+                <a href="{{ path('challenge_evaluations_create', {'id': challenge.id}) }}"
+                   class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-100 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Nouvelle évaluation
                 </a>
-            {% endfor %}
-        </ul>
+            </div>
+            {% if challenge.description %}
+                <p class="mt-6 text-slate-300 leading-relaxed">{{ challenge.description }}</p>
+            {% endif %}
+        </div>
+
+        {# Evaluations #}
+        <div>
+            <h2 class="text-lg font-semibold mb-4">Historique des évaluations</h2>
+
+            {% if challenge.evaluations|length > 0 %}
+                <div class="space-y-3">
+                    {% for eval in challenge.evaluations %}
+                        <a href="{{ path('challenge_evaluations_update', {'id': challenge.id, 'evaluationId': eval.id}) }}"
+                           class="group flex items-center justify-between rounded-xl bg-white/5 px-5 py-4 ring-1 ring-white/10 hover:bg-white/10 hover:ring-white/20 transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="h-10 w-10 rounded-full bg-primary-500/15 grid place-items-center text-primary-300 font-semibold ring-1 ring-primary-500/20">
+                                    {{ eval.value }}
+                                </div>
+                                <div>
+                                    <div class="font-medium text-white">{{ eval.value }} {{ eval.value > 1 ? 'points' : 'point' }}</div>
+                                    {% if eval.createdAt is defined and eval.createdAt %}
+                                        <div class="text-xs text-slate-400">{{ eval.createdAt|date('d/m/Y à H:i') }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="text-slate-500 group-hover:text-white transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="rounded-2xl bg-white/5 p-8 text-center ring-1 ring-white/10">
+                    <div class="mx-auto h-12 w-12 rounded-full bg-white/10 grid place-items-center mb-4">
+                        <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-white">Aucune évaluation</h3>
+                    <p class="mt-2 text-sm text-slate-400">Commencez à suivre votre progression</p>
+                    <a href="{{ path('challenge_evaluations_create', {'id': challenge.id}) }}"
+                       class="inline-flex items-center gap-2 mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/15 transition-colors ring-1 ring-white/10">
+                        Ajouter ma première évaluation
+                    </a>
+                </div>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

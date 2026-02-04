@@ -1,6 +1,29 @@
-{{ form_start(evaluationForm) }}
-    {{ form_row(evaluationForm.value, {
-        attr: {
-            class: 'bg-blue-300'
-        }}) }}
+{{ form_start(evaluationForm, {'attr': {'class': 'space-y-6'}}) }}
+    <div>
+        <label for="{{ evaluationForm.value.vars.id }}" class="block text-sm font-medium text-slate-300 mb-2">
+            Valeur de l'évaluation
+        </label>
+        {{ form_widget(evaluationForm.value, {
+            'attr': {
+                'class': 'w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-shadow',
+                'placeholder': 'Ex: 15'
+            }
+        }) }}
+        {% if evaluationForm.value.vars.errors|length > 0 %}
+            <p class="mt-2 text-sm text-red-400">{{ form_errors(evaluationForm.value) }}</p>
+        {% endif %}
+        <p class="mt-2 text-xs text-slate-500">Entrez la valeur correspondant à votre performance actuelle</p>
+    </div>
+
+    <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-100 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Enregistrer
+        </button>
+        <a href="{{ path('challenge_show', {'id': challenge.id}) }}" class="rounded-xl px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors">
+            Annuler
+        </a>
+    </div>
 {{ form_end(evaluationForm) }}
