@@ -4,15 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Challenge;
 use App\Entity\Evaluation;
+use App\Form\ChallengeFilterType;
 use App\Form\EvaluationType;
+use App\Repository\ChallengeCategoryRepository;
 use App\Repository\ChallengeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Bundle\SecurityBundle\SecurityBundle;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,10 +20,19 @@ final class ChallengeController extends AbstractController
 {
 
     #[Route('/', name: 'index')]
-    public function index(Request $request, ChallengeRepository $challengeRepository): Response
+    public function index(ChallengeRepository $challengeRepository, Request $request): Response
     {
-        $challenges = $challengeRepository->findAll();
+        $challengeFilterForm = $this->createForm(ChallengeFilterType::class);
+
+        $challengeFilterForm->handleRequest($request);
+        $category = null;
+        if ($challengeFilterForm->isSubmitted() && $challengeFilterForm->isValid()) {
+            $category = $challengeFilterForm->get('category')->getData();
+        }
+        $challenges = $challengeRepository->findByCategory($category);
+
         return $this->render('challenge/index.html.twig', [
+            'challengeFilterForm' => $challengeFilterForm,
             'challenges' => $challenges,
         ]);
     }

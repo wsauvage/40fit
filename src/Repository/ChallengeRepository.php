@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Challenge;
+use App\Entity\ChallengeCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,15 +17,33 @@ class ChallengeRepository extends ServiceEntityRepository
         parent::__construct($registry, Challenge::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->findBy([], ['title' => 'ASC']);
+    }
 
-    public function searchChallengeByTitle(string $query) : array
+    public function findByCategory(?ChallengeCategory $category = null): array
+    {
+        $qb = $this->createQueryBuilder('challenge')
+            ->orderBy('challenge.title', 'ASC');
+
+        if ($category !== null) {
+            $qb->where('challenge.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        return $qb->getQuery()
+            ->getResult();
+    }
+
+    public function searchChallengeByTitle(string $query): array
     {
         $qb = $this->createQueryBuilder('c');
 
         $qb->select('c.title, cat.title AS categoryTitle')
             ->leftJoin('c.category', 'cat')
             ->where('c.title LIKE :query')
-            ->setParameter('query', '%'.$query.'%')
+            ->setParameter('query', '%' . $query . '%')
             ->setMaxResults(1)
             ->orderBy('c.title', 'DESC');
 
