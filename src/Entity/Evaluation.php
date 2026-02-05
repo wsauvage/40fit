@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\EvaluationRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EvaluationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Evaluation
 {
     #[ORM\Id]
@@ -26,6 +28,9 @@ class Evaluation
     #[Assert\NotNull]
     #[Assert\PositiveOrZero]
     private ?float $value = null;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $createdAt = null;
 
     public function getId(): ?int
     {
@@ -68,5 +73,21 @@ class Evaluation
         return $this;
     }
 
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new DateTimeImmutable();
+    }
 }
