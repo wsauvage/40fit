@@ -14,5 +14,4 @@
 /.phpunit.cache/
 ###< phpunit/phpunit ###
 
-.idea/copilot.data.migration.ask2agent.xml
-.idea/laravel-idea.xml
+.idea/*/**
