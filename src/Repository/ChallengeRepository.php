@@ -19,38 +19,39 @@ class ChallengeRepository extends ServiceEntityRepository
 
     public function findAll(): array
     {
-        return $this->findBy([], ['title' => 'ASC']);
+        return $this->findBy([], ["title" => "ASC"]);
     }
 
     public function findByCategory(?ChallengeCategory $category = null): array
     {
-        $qb = $this->createQueryBuilder('challenge')
-            ->orderBy('challenge.title', 'ASC');
+        $qb = $this->createQueryBuilder("challenge")->orderBy(
+            "challenge.title",
+            "ASC",
+        );
 
         if ($category !== null) {
-            $qb->where('challenge.category = :category')
-                ->setParameter('category', $category);
+            $qb->where("challenge.category = :category")->setParameter(
+                "category",
+                $category,
+            );
         }
 
-        return $qb->getQuery()
-            ->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function searchChallengeByTitle(string $query): array
     {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder("c");
 
-        $qb->select('c.title, cat.title AS categoryTitle')
-            ->leftJoin('c.category', 'cat')
-            ->where('c.title LIKE :query')
-            ->setParameter('query', '%' . $query . '%')
+        $qb->select("c.title, cat.title AS categoryTitle")
+            ->leftJoin("c.category", "cat")
+            ->where("c.title LIKE :query")
+            ->setParameter("query", "%" . $query . "%")
             ->setMaxResults(1)
-            ->orderBy('c.title', 'DESC');
+            ->orderBy("c.title", "DESC");
 
         return $qb->getQuery()->getOneOrNullResult();
     }
-
-
 
     //    /**
     //     * @return Challenge[] Returns an array of Challenge objects

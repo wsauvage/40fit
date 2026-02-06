@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit;
+namespace App\Tests\Unit;
 
 use App\Entity\Challenge;
 use App\Entity\Evaluation;
