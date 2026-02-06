@@ -73,6 +73,8 @@ final class ChallengeController extends AbstractController
             $entityManager->persist($evaluation);
             $entityManager->flush();
 
+            $this->addFlash("success", "Super une nouvelle évaluation !");
+
             return $this->redirectToRoute("challenge_show", [
                 "id" => $challenge->getId(),
             ]);
