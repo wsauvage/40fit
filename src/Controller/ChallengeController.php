@@ -69,6 +69,17 @@ final class ChallengeController extends AbstractController
         $evaluationForm = $this->createForm(EvaluationType::class, $evaluation);
 
         $evaluationForm->handleRequest($request);
+
+        if ($evaluationForm->isSubmitted()) {
+            $errors = $evaluationForm->getErrors(true);
+            if (count($errors) > 0) {
+                $this->addFlash(
+                    "error",
+                    "Impossible de soumettre le formulaire",
+                );
+            }
+        }
+
         if ($evaluationForm->isSubmitted() && $evaluationForm->isValid()) {
             $entityManager->persist($evaluation);
             $entityManager->flush();

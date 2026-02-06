@@ -1,0 +1,14 @@
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        {% if type == 'success' %}
+            <div class="p-3 border rounded-lg mb-5  border-green-300 bg-green-500/20 text-green-300">
+                {{ message }}
+            </div>
+        {% endif %}
+        {% if type == 'error' %}
+            <div class="p-3 border rounded-lg mb-5 border-red-300 bg-red-500/20 text-red-300">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
